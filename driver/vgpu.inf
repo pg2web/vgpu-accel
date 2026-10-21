@@ -1,0 +1,69 @@
+; SPDX-License-Identifier: MIT
+; vgpu.inf - vgpu-accel: OpenGL acceleration for Windows guests on QEMU virtio-gpu-gl (virgl).
+; Non-display driver: the guest keeps its own display adapter (VGA, QXL, RDP).
+
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = System
+ClassGuid   = {4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider    = %Provider%
+CatalogFile = vgpu.cat
+DriverVer   = %%BUILDDATE%%,%%BUILDVERSION%%
+PnpLockdown = 1
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[SourceDisksNames]
+1 = %DiskName%
+
+[SourceDisksFiles]
+vgpu.sys = 1
+
+[Manufacturer]
+%Provider% = Models, NTamd64
+
+[Models.NTamd64]
+; virtio-gpu (modern), as exposed by virtio-gpu-gl-pci
+%DeviceDesc% = Install, PCI\VEN_1AF4&DEV_1050&SUBSYS_11001AF4&REV_01
+%DeviceDesc% = Install, PCI\VEN_1AF4&DEV_1050
+
+[Install.NT]
+CopyFiles = Install.CopyFiles
+
+[Install.CopyFiles]
+vgpu.sys
+
+[Install.NT.HW]
+AddReg = Install.HW.AddReg
+
+[Install.HW.AddReg]
+; OpenGL runs in ordinary user processes: let every user open the device (no admin rights needed)
+HKR,,Security,,"D:P(A;;GA;;;SY)(A;;GA;;;BA)(A;;GRGW;;;WD)"
+; one message-signaled interrupt, shared by config changes and the control queue
+HKR,Interrupt Management,,0x00000010
+HKR,Interrupt Management\MessageSignaledInterruptProperties,,0x00000010
+HKR,Interrupt Management\MessageSignaledInterruptProperties,MSISupported,0x00010001,1
+HKR,Interrupt Management\MessageSignaledInterruptProperties,MessageNumberLimit,0x00010001,1
+
+[Install.NT.Services]
+AddService = vgpu, 0x00000002, Service
+
+[Service]
+DisplayName   = %ServiceName%
+ServiceType   = 1               ; SERVICE_KERNEL_DRIVER
+StartType     = 3               ; SERVICE_DEMAND_START
+ErrorControl  = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary = %13%\vgpu.sys
+
+[Install.NT.Wdf]
+KmdfService = vgpu, Install.Wdf
+
+[Install.Wdf]
+KmdfLibraryVersion = 1.27
+
+[Strings]
+Provider    = "vgpu-accel"
+DiskName    = "vgpu-accel installation media"
+DeviceDesc  = "VirtIO GPU 3D Accelerator (virgl)"
+ServiceName = "vgpu-accel virgl accelerator"

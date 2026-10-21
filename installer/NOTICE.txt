@@ -1,0 +1,24 @@
+vgpu-accel binary package: licenses and sources
+================================================
+
+What is in this package and under which license:
+
+- vgpu.sys, vgputest, gltest, glspin, install scripts: MIT License, copyright the vgpu-accel
+  authors. Text: licenses/LICENSE-vgpu-accel.txt
+  Source: https://github.com/pg2web/vgpu-accel
+
+- vgpu.sys contains the VirtIO library from virtio-win / kvm-guest-drivers-windows
+  (BSD-3-Clause, Red Hat, IBM and Google). Text: licenses/LICENSE-virtio-win.txt
+  Source: https://github.com/virtio-win/kvm-guest-drivers-windows
+
+- opengl32.dll, vio_ogl_x64.dll, vio_ogl_x86.dll: Mesa 26.2.5 (mostly MIT) with the vgpu-accel
+  changes. Mesa's license and copyright statement: licenses/LICENSE-mesa.rst
+  Source: https://github.com/pg2web/mesa (tag vgpu-accel-26.2.5-1, official base:
+  https://gitlab.freedesktop.org/mesa/mesa, tag mesa-26.2.5). The Mesa build also includes zlib 1.3.1
+  (zlib License).
+
+- vgpu_test_signing.cer: the public part of the test-signing certificate. This package is test-signed:
+  Windows must run with test signing enabled (setup.bat does this).
+
+Credits: tenclass/mvisor-win-vgpu-driver, anonymix007 (Mesa Windows work, makecat), the virtio-win
+project, Mesa and virglrenderer (used on the host, not part of this package).
