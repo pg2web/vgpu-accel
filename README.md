@@ -203,6 +203,12 @@ docker build -t vgpu-accel-env .
 docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/src" vgpu-accel-env ./build.sh
 ```
 
+For rootless podman:
+
+```sh
+podman run --rm --userns=keep-id -v "$PWD:/src:Z" vgpu-accel-env ./build.sh
+```
+
 The result is `target/vgpu_accel.zip`. `build.sh` fetches Mesa from `github.com/pg2web/mesa` and creates a
 test-signing certificate in `certs/` on the first run. To build only the kernel driver on Windows, see
 [BUILD-WINDOWS.md](BUILD-WINDOWS.md). Details: [docs/DESIGN.md](docs/DESIGN.md#building).
