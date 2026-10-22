@@ -10,6 +10,10 @@ Video Editing, 3D Modeling, Scientific Visualization, Games at useful speeds.
 
 ![Unigine](docs/assets/9f5ccec4feff467915f8fca1054de5337c438e55.png)
 
+![](docs/assets/d0aadb423fb338870ffd835ddc65035de78b470b.png)
+
+![](docs/assets/6ef91cf977ea62a75bd0170aa7d6ddd4ce762be3.png)
+
 It is made of two parts:
 
 - **`vgpu.sys`**, a small Windows driver for the virtio-gpu device;
@@ -239,3 +243,4 @@ Thanks to the projects this work builds on:
   (https://gitlab.freedesktop.org/virgl/virglrenderer).
 - **tmp64/clang-cl-linux** (https://github.com/tmp64/clang-cl-linux): `generate_vfs.py`, used by the
   build environment to run clang-cl against the EWDK.
+- vgpu-accel was built in close collaboration with Anthropic and Google frontier **AI** models.
